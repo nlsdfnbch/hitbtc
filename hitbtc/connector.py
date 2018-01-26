@@ -40,6 +40,8 @@ class HitBTCConnector(WebSocketConnectorThread):
         """Initialize a HitBTCConnector instance."""
         url = url or 'wss://api.hitbtc.com/api/2/ws'
         super(HitBTCConnector, self).__init__(url, **conn_ops)
+        # visible thread name
+        self.name = 'HitBTCConnector'
         self.books = defaultdict(dict)
         self.requests = {}
         self.raw = raw
