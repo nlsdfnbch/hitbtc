@@ -207,6 +207,7 @@ class WebSocketConnector:
         # Automatically reconnect if we didnt receive data
         self.connection_timer = Timer(self.connection_timeout,
                                       self._connection_timed_out)
+        self.connection_timer.name = "HitBTCConnectionTimer"
         self.connection_timer.start()
 
     def send(self, data):
