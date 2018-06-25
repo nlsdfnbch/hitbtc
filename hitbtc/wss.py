@@ -122,6 +122,7 @@ class WebSocketConnector:
         ssl_defaults = ssl.get_default_verify_paths()
         sslopt_ca_certs = {'ca_certs': ssl_defaults.cafile}
         self.conn.run_forever(sslopt=sslopt_ca_certs)
+        self.conn.close()
 
         while self.reconnect_required:
             if not self.disconnect_called:
@@ -131,7 +132,12 @@ class WebSocketConnector:
                 # We need to set this flag since closing the socket will
                 # set it to False
                 self.conn.keep_running = True
-                self.conn.run_forever(sslopt=sslopt_ca_certs)
+                try:
+                    self.conn.run_forever(sslopt=sslopt_ca_certs)
+                    self.conn.close()                    
+                except Exception as e:
+                    self.log.error('!!!!!!!! run_forever() %s'%e)
+                    
 
     def run(self):
         """Run the main method of thread."""
